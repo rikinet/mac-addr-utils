@@ -5,7 +5,7 @@ from setuptools import setup, find_packages
 
 
 setup(name='net_util',
-      version='1.0',
+      version='1.1',
       description='Utilities to canon network addresses',
       url='http://github.com/rikinet/mac-addr-utils',
       author='Riki Network Systems, Inc.',
