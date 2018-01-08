@@ -9,9 +9,12 @@ class TestMacAddr(TestCase):
         self.assertEqual('01:02:03:04:05:06', to_colon_separated('1:2:3:4:5:6'))
         self.assertEqual('00:01:02:03:04:05', to_colon_separated('1.203.0405'))
         self.assertEqual('00:01:02:03:04:05', to_colon_separated('00-01-02-03-04-05'))
+        self.assertEqual('00:01:02:03:04:05', to_colon_separated(b'\x00\x01\x02\x03\x04\x05'))
 
     def test_to_dot_separated(self):
         self.assertEqual('0102.0304.0a0b', to_dot_separated('01:02:03:04:0A:0B'))
         self.assertEqual('0a0b.0c0d.0e0f', to_dot_separated('a:b:c:d:e:f'))
         self.assertEqual('0a0b.0c0d.0e0f', to_dot_separated('0a0b0c0d0e0f'))
         self.assertEqual('0a0b.0c0d.0e0f', to_dot_separated('0a-0b-0c-0d-0e-0f'))
+        self.assertEqual('0a0b.0c0d.0e0f', to_dot_separated(b'\x0a\x0b\x0c\x0d\x0e\x0f'))
+        self.assertEqual('0000.0000.0000', to_dot_separated(b'\x00'))

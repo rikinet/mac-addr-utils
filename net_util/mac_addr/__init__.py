@@ -20,11 +20,15 @@ REG_MAC12 = re.compile(PAT_MAC12)
 def to_colon_separated(source):
     """
     MAC アドレスとして認識できる文字列をコロンで連結された六つ組に整形する。
-    :param source:
-    :type source: str
+
+    :param source: MAC アドレスとして認識できる文字列、またはバイト列
     :return: コロンで区切られた MAC アドレス
     :rtype: str
     """
+    if isinstance(source, bytes):
+        if len(source) < 6:
+            return '00:00:00:00:00:00'
+        return ':'.join(['%02x' % x for x in source])
     m = REG_MAC12.match(source)
     if m is not None:
         return ':'.join(m.group(1, 2, 3, 4, 5, 6)).lower()
@@ -42,10 +46,16 @@ def to_dot_separated(source):
     """
     MAC アドレスとして認識できる文字列をドットで連結された三つ組みに整形する。
     :param source: 入力 MAC アドレス
-    :type source: str
     :return: ドットで連結された4桁の16進数三つ組み
     :rtype: str
     """
+    if isinstance(source, bytes):
+        if len(source) < 6:
+            return '0000.0000.0000'
+        x1 = '%04x' % (source[0] << 8 | source[1])
+        x2 = '%04x' % (source[2] << 8 | source[3])
+        x3 = '%04x' % (source[4] << 8 | source[5])
+        return '.'.join((x1, x2, x3))
     m = REG_MAC2.match(source)
     if m is not None:
         sextet = [expand(x, 2) for x in m.group(1, 2, 3, 4, 5, 6)]
